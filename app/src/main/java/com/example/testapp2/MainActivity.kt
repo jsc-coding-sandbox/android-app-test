@@ -36,6 +36,13 @@ class MainActivity : AppCompatActivity() {
                 val translationDistance = (initialTextViewTranslationY +
                         binding.seekbar.progress * resources.getDimension(R.dimen.text_anim_step) * -1)
                 binding.textviewProgress.animate().translationY(translationDistance)
+
+                // Only do the spin animation if text was changed programmatically (by Reset button)
+                // NOTE: p2 is "fromUser".
+                if(!p2)
+                    // Rotate 360 degrees for 500ms, and move back to initial Y position.
+                    binding.textviewProgress.animate().setDuration(500).rotationBy(360f)
+                        .translationY(initialTextViewTranslationY)
                 }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -49,9 +56,6 @@ class MainActivity : AppCompatActivity() {
         // The "v ->" part is called a lambda. ToDo: Learn more about lambdas.
         binding.buttonReset.setOnClickListener { v ->
             binding.seekbar.setProgress(0)
-            // Rotate 360 degrees for 500ms, and move back to initial Y position.
-            binding.textviewProgress.animate().setDuration(500).rotationBy(360f)
-                .translationY(initialTextViewTranslationY)
         }
     }
 }
